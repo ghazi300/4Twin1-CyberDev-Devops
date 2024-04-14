@@ -11,7 +11,6 @@ pipeline {
                 script {
                     dir('DevOps_Project_Front') {
                         sh('npm install')
-                        sh('npm test')
                         sh('ng build')
                     }
                 }

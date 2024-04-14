@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StockComponent } from './stock.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('StockComponent', () => {
   let component: StockComponent;
@@ -8,6 +10,7 @@ describe('StockComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientModule,MatDialogModule],
       declarations: [StockComponent]
     });
     fixture = TestBed.createComponent(StockComponent);

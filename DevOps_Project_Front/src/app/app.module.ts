@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ContactComponent } from './contact/contact.component'; // Import FormsModule
+import { RouterModule } from '@angular/router';
 
 
 
@@ -25,11 +26,13 @@ import { ContactComponent } from './contact/contact.component'; // Import FormsM
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     MatButtonModule,
     MatDialogModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent]
