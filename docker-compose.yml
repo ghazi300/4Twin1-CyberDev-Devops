@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  angular:
+    build:
+      context: .
+      dockerfile: Dockerfile-angular
+    image: GhaziBOUZID-TWIN1-CyberDev-DevOps-Angular
+    ports:
+      - '80:80'
+  spring:
+    build:
+      context: .
+      dockerfile: Dockerfile-spring
+    image: GhaziBOUZID-TWIN1-CyberDev-DevOps-Spring
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql
+    container_name: mysql
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
