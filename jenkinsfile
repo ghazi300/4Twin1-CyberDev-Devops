@@ -28,14 +28,9 @@ pipeline {
                 }
             }
         }
-        stage('SonarQube Analysis') {
+        stage('MVN SONARQUBE') {
             steps {
-                script {
-                    def scannerHome = tool 'scanner'
-                    withSonarQubeEnv {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar -Dmaven.test.skip=true';
             }
         }
         stage('Run backend') {
