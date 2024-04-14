@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+    stages {
+        stage('Install dependencies') {
+            steps {
+                script {
+                    sh('npm install')
+                }
+            }
+        }
+        stage('Unit Test') {
+            steps {
+                script {
+                    sh('npm test')
+                }
+            }
+        }
+        stage('Build frontend') {
+            steps {
+                script {
+                    sh('ng build')
+                }
+            }
+        }
+        stage('Build and test backend') {
+            when {
+                expression { env.BRANCH_NAME == 'GhaziBOUZID-4Twin1-CyberDev' }
+            }
+            steps {
+                script {
+                    sh('npm install')
+                    sh('mvn clean install')
+                }
+            }
+        }
+        stage('Run backend') {
+            when {
+                expression { env.BRANCH_NAME == 'GhaziBOUZID-4Twin1-CyberDev' }
+            }
+            steps {
+                script {
+                    sh('mvn spring-boot:run &')
+
+                }
+            }
+        }
+    }
+}
