@@ -28,9 +28,13 @@ pipeline {
                 }
             }
         }
-        stage('MVN SONARQUBE') {
+           stage('SonarQube analysis') {
             steps {
-                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar -Dmaven.test.skip=true';
+                script {
+                    withSonarQubeEnv('SonarQubeServer') {
+                        sh 'sonar-scanner'
+                    }
+                }
             }
         }
         stage('Run backend') {
