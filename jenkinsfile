@@ -6,46 +6,38 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Install dependencies') {
-            steps {
-                script {
-                    sh('npm install')
-                }
-            }
-        }
-        stage('Unit Test') {
-            steps {
-                script {
-                    sh('npm test')
-                }
-            }
-        }
         stage('Build frontend') {
             steps {
                 script {
-                    sh('ng build')
+                    dir('DevOps_Project_Front') {
+                        sh('npm install')
+                        sh('npm test')
+                        sh('ng build')
+                    }
                 }
             }
         }
         stage('Build and test backend') {
             when {
-                expression { env.BRANCH_NAME == 'GhaziBOUZID-4Twin1-CyberDev' }
+                branch 'GhaziBOUZID-4Twin1-CyberDev'
             }
             steps {
                 script {
-                    sh('npm install')
-                    sh('mvn clean install')
+                    dir('DevOps_Project') {
+                        sh('mvn clean install')
+                    }
                 }
             }
         }
         stage('Run backend') {
             when {
-                expression { env.BRANCH_NAME == 'GhaziBOUZID-4Twin1-CyberDev' }
+                branch 'GhaziBOUZID-4Twin1-CyberDev'
             }
             steps {
                 script {
-                    sh('mvn spring-boot:run &')
-
+                    dir('DevOps_Project') {
+                        sh('mvn spring-boot:run &')
+                    }
                 }
             }
         }
