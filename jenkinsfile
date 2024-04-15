@@ -2,8 +2,10 @@ pipeline {
     agent any
 
     environment {
-        registryCredentials = "nexus"
-        registry = "192.168.33.10:8081"
+        dockerHubUsername = credentials('ghazi100')
+        dockerHubPassword = credentials('Ghazi.200')
+        imageName = 'ghazi100/springangularapp'
+        imageTag = '5.0'
     }
 
     stages {
@@ -15,15 +17,13 @@ pipeline {
 
         stage('Build frontend') {
             steps {
-                script {
-                    dir('DevOps_Project_Front') {
-                        sh('npm install')
-                        sh('npm run build')
-                    }
+                dir('DevOps_Project_Front') {
+                    sh('npm install')
+                    sh('npm run build')
                 }
             }
         }
-        
+
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -34,23 +34,14 @@ pipeline {
                 }
             }
         }
-            stage('Pause') {
-            steps {
-                script {
-                    sleep 120
-                }
-            }
-        }
 
         stage('Build and test backend') {
             when {
                 branch 'GhaziBOUZID-4Twin1-CyberDev'
             }
             steps {
-                script {
-                    dir('DevOps_Project') {
-                        sh('mvn clean install')
-                    }
+                dir('DevOps_Project') {
+                    sh('mvn clean install')
                 }
             }
         }
@@ -63,11 +54,12 @@ pipeline {
             }
         }
 
-        stage('Deploy to Nexus') {
+        stage('Deploy to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry("http://${registry}", registryCredentials) {
-                        sh('docker push ${registry}/springangularapp:5.0')
+                    docker.withRegistry('https://index.docker.io/v1/', dockerHubUsername, dockerHubPassword) {
+                        sh("docker tag springangularapp:5.0 ${imageName}:${imageTag}")
+                        sh("docker push ${imageName}:${imageTag}")
                     }
                 }
             }
