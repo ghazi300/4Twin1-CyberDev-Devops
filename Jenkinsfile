@@ -17,21 +17,27 @@ pipeline {
         
         stage('Build & JUnit Test') {
             steps {
-                // Build the project and run JUnit tests
-                sh 'mvn install'
+                // Change to the directory containing your pom.xml file
+                dir('DevOps_Project') {
+                    // Build the project and run JUnit tests
+                    sh 'mvn install'
+                }
             }
             post {
                 success {
                     // Archive JUnit test results
-                    junit 'target/surefire-reports/**/*.xml'
+                    junit 'back/target/surefire-reports/**/*.xml'
                 }
             }
         }
         
         stage('Maven Build') {
             steps {
-                // Build the project with Maven, skipping tests
-                sh 'mvn package -DskipTests=true'
+                // Change to the directory containing your pom.xml file
+                dir('back') {
+                    // Build the project with Maven, skipping tests
+                    sh 'mvn package -DskipTests=true'
+                }
             }
         }
         
