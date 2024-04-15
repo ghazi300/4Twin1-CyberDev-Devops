@@ -2,14 +2,14 @@ version: '3.8'
 services:
   angular:
     build:
-      context: .
+      context: ./DevOps_Project_Front
       dockerfile: Dockerfile-angular
     image: angular
     ports:
       - '80:80'
   spring:
     build:
-      context: .
+      context: ./DevOps_Project
       dockerfile: Dockerfile-spring
     image: spring
     ports:
