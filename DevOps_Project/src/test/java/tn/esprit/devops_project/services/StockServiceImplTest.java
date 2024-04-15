@@ -26,6 +26,11 @@ public class StockServiceImplTest {
     @InjectMocks
     private StockServiceImpl stockService;
 
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     public void testAddStock() {
         Stock stock = new Stock();
@@ -34,6 +39,7 @@ public class StockServiceImplTest {
         assertNotNull(result);
         assertEquals(stock, result);
     }
+
     @Test
     public void testRetrieveAllStock() {
         // Mocking data

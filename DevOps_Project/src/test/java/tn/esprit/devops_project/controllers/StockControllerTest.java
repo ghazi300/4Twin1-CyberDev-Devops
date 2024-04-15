@@ -1,10 +1,12 @@
 package tn.esprit.devops_project.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import tn.esprit.devops_project.entities.Stock;
 import tn.esprit.devops_project.services.Iservices.IStockService;
@@ -25,6 +27,11 @@ public class StockControllerTest {
     @InjectMocks
     private StockController stockController;
 
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
     public void testAddStock() {
         Stock stock = new Stock();
@@ -33,6 +40,7 @@ public class StockControllerTest {
         assertNotNull(result);
         assertEquals(stock, result);
     }
+
     @Test
     public void testRetrieveAllStock() {
         // Mocking data
