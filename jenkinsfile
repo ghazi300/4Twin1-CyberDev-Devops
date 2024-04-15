@@ -13,10 +13,11 @@ pipeline {
             }
         }
 
-        stage('Build and test frontend') {
+        stage('Build frontend') {
             steps {
                 dir('DevOps_Project_Front') {
-                    sh('docker-compose -f docker-compose.yml build angular')
+                    sh('npm install')
+                    sh('npm run build')
                 }
             }
         }
@@ -34,7 +35,9 @@ pipeline {
 
         stage('Building images') {
             steps {
-                sh('docker-compose -f docker-compose.yml build')
+                script {
+                    sh('docker-compose build')
+                }
             }
         }
 
@@ -42,6 +45,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("http://${registry}", registryCredentials) {
+                        sh('docker-compose -f docker-compose.yml build')
                         sh('docker-compose -f docker-compose.yml push')
                     }
                 }
@@ -50,7 +54,11 @@ pipeline {
 
         stage('Run application') {
             steps {
-                sh('docker-compose -f docker-compose.yml up -d')
+                script {
+                    docker.withRegistry("http://${registry}", registryCredentials) {
+                        sh('docker-compose up -d')
+                    }
+                }
             }
         }
     }
