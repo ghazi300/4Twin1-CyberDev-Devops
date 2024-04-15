@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        registryCredentials = "nexus"
+        registry = "192.168.33.10:8083"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -43,7 +48,7 @@ pipeline {
             }
         }
 
-        stage('Building images (node and mongo)') {
+        stage('Building images') {
             steps {
                 script {
                     sh('docker-compose build')
@@ -51,14 +56,11 @@ pipeline {
             }
         }
 
-        stage('Run backend') {
-            when {
-                branch 'GhaziBOUZID-4Twin1-CyberDev'
-            }
+        stage('Deploy to Nexus') {
             steps {
                 script {
-                    dir('DevOps_Project') {
-                        sh('mvn spring-boot:run &')
+                    docker.withRegistry("http://${registry}", registryCredentials) {
+                        sh('docker push ${registry}/springangularapp:5.0')
                     }
                 }
             }
