@@ -4,14 +4,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-angular
-    image: GhaziBOUZID-TWIN1-CyberDev-DevOps-Angular
+    image: angular
     ports:
       - '80:80'
   spring:
     build:
       context: .
       dockerfile: Dockerfile-spring
-    image: GhaziBOUZID-TWIN1-CyberDev-DevOps-Spring
+    image: spring
     ports:
       - '8080:8080'
     depends_on:
