@@ -1,13 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        dockerHubUsername = credentials('ghazi100')
-        dockerHubPassword = credentials('Ghazi.200')
-        imageName = 'ghazi100/springangularapp'
-        imageTag = '5.0'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -41,7 +34,7 @@ pipeline {
             }
             steps {
                 dir('DevOps_Project') {
-                    sh('mvn clean test')
+                    sh('mvn clean install')
                 }
             }
         }
@@ -50,18 +43,6 @@ pipeline {
             steps {
                 script {
                     sh('docker-compose build')
-                }
-            }
-        }
-
-        stage('Deploy to Docker Hub') {
-            steps {
-                script {
-                    withEnv(["DOCKERHUB_USERNAME=${dockerHubUsername}", "DOCKERHUB_PASSWORD=${dockerHubPassword}"]) {
-                        sh("docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD")
-                        sh("docker tag springangularapp:5.0 ${imageName}:${imageTag}")
-                        sh("docker push ${imageName}:${imageTag}")
-                    }
                 }
             }
         }
