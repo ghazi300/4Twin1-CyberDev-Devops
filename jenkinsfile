@@ -37,7 +37,7 @@ pipeline {
             stage('Pause') {
             steps {
                 script {
-                    sleep 60
+                    sleep 120
                 }
             }
         }
