@@ -34,6 +34,13 @@ pipeline {
                 }
             }
         }
+            stage('Pause') {
+            steps {
+                script {
+                    sleep 30
+                }
+            }
+        }
 
         stage('Build and test backend') {
             when {
