@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        dockerHubUsername = 'ghazi100'
-        dockerHubPassword = 'Ghazi.200'
+        dockerHubUsername = credentials('ghazi100')
+        dockerHubPassword = credentials('Ghazi.200')
         imageName = 'ghazi100/springangularapp'
         imageTag = '5.0'
     }
@@ -57,7 +57,8 @@ pipeline {
         stage('Deploy to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', dockerHubUsername, dockerHubPassword) {
+                    withEnv(["DOCKERHUB_USERNAME=${dockerHubUsername}", "DOCKERHUB_PASSWORD=${dockerHubPassword}"]) {
+                        sh("docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD")
                         sh("docker tag springangularapp:5.0 ${imageName}:${imageTag}")
                         sh("docker push ${imageName}:${imageTag}")
                     }
