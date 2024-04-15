@@ -1,19 +1,19 @@
 version: '3.8'
 services:
   angular:
-    image: ${registry}/angular
     build:
       context: ./DevOps_Project_Front
       dockerfile: Dockerfile-angular
+    image: angular
     ports:
       - '80:80'
   spring:
-    image: ${registry}/spring
     build:
       context: ./DevOps_Project
       dockerfile: Dockerfile-spring
+    image: spring
     ports:
-      - '8080:8080'
+      - '8081:8080'
     depends_on:
       - mysql
   mysql:
