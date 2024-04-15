@@ -13,11 +13,10 @@ pipeline {
             }
         }
 
-        stage('Build frontend') {
+        stage('Build and test frontend') {
             steps {
                 dir('DevOps_Project_Front') {
-                    sh('npm install')
-                    sh('npm run build')
+                    sh('docker-compose -f docker-compose.yml build angular')
                 }
             }
         }
@@ -35,9 +34,7 @@ pipeline {
 
         stage('Building images') {
             steps {
-                script {
-                    sh('docker-compose build')
-                }
+                sh('docker-compose -f docker-compose.yml build')
             }
         }
 
@@ -45,7 +42,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry("http://${registry}", registryCredentials) {
-                        sh('docker push ${registry}/springangularapp:5.0')
+                        sh('docker-compose -f docker-compose.yml push')
                     }
                 }
             }
@@ -53,12 +50,7 @@ pipeline {
 
         stage('Run application') {
             steps {
-                script {
-                    docker.withRegistry("http://${registry}", registryCredentials) {
-                        sh('docker pull ${registry}/nodemongoapp:6.0')
-                        sh('docker-compose up -d')
-                    }
-                }
+                sh('docker-compose -f docker-compose.yml up -d')
             }
         }
     }
