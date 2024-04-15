@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        dockerHubUsername = credentials('ghazi100')
-        dockerHubPassword = credentials('Ghazi.200')
+        dockerHubUsername = 'ghazi100'
+        dockerHubPassword = 'Ghazi.200'
         imageName = 'ghazi100/springangularapp'
         imageTag = '5.0'
     }
